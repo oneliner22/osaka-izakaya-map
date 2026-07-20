@@ -709,6 +709,206 @@
    ]
   },
   {
+   "slug": "mataraiya",
+   "name": "焼肉酒場 又来家",
+   "area": "namba",
+   "cat": "大衆・名物",
+   "lat": 34.66647,
+   "lng": 135.504013,
+   "approx": false,
+   "desc": "「分厚いステーキみたいな肉が柔らかくて飲み放題の酒も濃い」レポが千いいね超えの焼肉酒場（千日前2-9-6 リップル千日前センタービル2F）。上質和牛を酒場価格で出す広々個室スタイルで、グループ利用の口コミ評価が高い。オンライン予約可。Google 4.6（495件）。",
+   "videos": [],
+   "sun": "12:00〜23:00",
+   "sun_class": "lunch",
+   "tweets": [
+    {
+     "id": "2062519167073554505",
+     "handle": "usamiiin",
+     "likes": "1,439"
+    }
+   ],
+   "links": [
+    {
+     "label": "公式HP",
+     "url": "https://mataraiya-yakiniku.com/"
+    },
+    {
+     "label": "Google Map",
+     "url": "https://maps.google.com/?cid=15019882631749924283"
+    }
+   ]
+  },
+  {
+   "slug": "shingo",
+   "name": "すし居酒屋 しんご",
+   "area": "namba",
+   "cat": "海鮮・寿司",
+   "lat": 34.671375,
+   "lng": 135.504349,
+   "approx": false,
+   "desc": "「人生で1番通ってる店」という外食1492回のグルメ垢の投稿がバズった寿司居酒屋（東心斎橋2-4-19 玉屋町ギャラクシービル3号館1F）。大将の人柄と鮮度で海外観光客のレビューも絶賛一色、Google 4.8（194件）はミナミ勢トップ。入口が分かりにくい隠れ家。",
+   "videos": [],
+   "sun": "定休日",
+   "sun_class": "closed",
+   "sun_note": "日曜定休（月〜土17:30〜23:30営業）",
+   "tweets": [
+    {
+     "id": "2047841568267309202",
+     "handle": "yk_mg18",
+     "likes": "1,416"
+    }
+   ],
+   "links": [
+    {
+     "label": "公式HP",
+     "url": "https://kdvg000.gorp.jp/"
+    },
+    {
+     "label": "Google Map",
+     "url": "https://maps.google.com/?cid=12056036823935088545"
+    }
+   ]
+  },
+  {
+   "slug": "aaaa",
+   "name": "ああああ",
+   "area": "namba",
+   "cat": "立ち飲み・せんべろ",
+   "lat": 34.66378,
+   "lng": 135.502792,
+   "approx": false,
+   "desc": "RPGの主人公みたいな店名の看板なし立ち飲み（難波千日前15-19 油谷ビル3F）。「全品1,000円以下。実にうまい」と2度バズ（1,196・909いいね）。いわしのモンブランや蟹味噌クリームコロッケなど創作系が強く、週末は常時待ちの人気。Google 4.6（16件）。",
+   "videos": [],
+   "sun": "17:00〜24:00",
+   "sun_class": "evening",
+   "tweets": [
+    {
+     "id": "2059229615504437629",
+     "handle": "ad_career28",
+     "likes": "1,196"
+    }
+   ],
+   "links": [
+    {
+     "label": "Google Map",
+     "url": "https://maps.google.com/?cid=15538552961901480625"
+    }
+   ]
+  },
+  {
+   "slug": "rikusui",
+   "name": "生産者直営 海鮮居酒屋 Rikusui",
+   "area": "namba",
+   "cat": "海鮮・寿司",
+   "lat": 34.669483,
+   "lng": 135.501663,
+   "approx": false,
+   "desc": "中トロ・とらふぐ3時間食べ放題6,050円（女性千円引き）の投稿がバズった海鮮居酒屋（心斎橋筋2-3-15 戎橋NORTHビル5F）。生産者直営で、焼きフグのお通しから始まるQRオーダー式。食べ放題の質は口コミで賛否あるので、コース選びは慎重に。Google 4.2（883件）。",
+   "videos": [],
+   "sun": "16:00〜23:00",
+   "sun_class": "evening",
+   "tweets": [
+    {
+     "id": "2069739710533243085",
+     "handle": "osakagourmet4",
+     "likes": "719"
+    }
+   ],
+   "links": [
+    {
+     "label": "ホットペッパー",
+     "url": "https://www.hotpepper.jp/strJ003624554/"
+    },
+    {
+     "label": "Google Map",
+     "url": "https://maps.google.com/?cid=215750310012842113"
+    }
+   ]
+  },
+  {
+   "slug": "hidezo-tachinomi",
+   "name": "魚屋ひでぞう 立ち呑み",
+   "area": "namba",
+   "cat": "立ち飲み・せんべろ",
+   "lat": 34.664459,
+   "lng": 135.503983,
+   "approx": false,
+   "desc": "造り三種580円・生カキポン酢580円・おまかせ五貫880円の海鮮立ち飲み（難波千日前9-1）。「刺身はどれも新鮮でコスパ抜群、いつも行列」のレポでバズ。裏なんばの海鮮立ち飲みの代名詞的存在で、市場直送ネタが日替わり。Google 4.2（472件）。",
+   "videos": [],
+   "sun": "15:00〜24:00",
+   "sun_class": "evening",
+   "tweets": [
+    {
+     "id": "2073024721399234801",
+     "handle": "nnstable",
+     "likes": "529"
+    }
+   ],
+   "links": [
+    {
+     "label": "Google Map",
+     "url": "https://maps.google.com/?cid=12743576623859092201"
+    }
+   ]
+  },
+  {
+   "slug": "minaminami",
+   "name": "天ぷらとすし酒場 みなみなみ",
+   "area": "namba",
+   "cat": "海鮮・寿司",
+   "lat": 34.663895,
+   "lng": 135.503174,
+   "approx": false,
+   "desc": "2026年4月開店の新店（難波千日前14-22 イレブンハイツ1F）。寿司2貫180円〜・天ぷら120円〜で「シャリが小さくていくらでも食べれる」とバズ。18時までのハッピーアワーと梅酒ソーダ373円（みなみ）の語呂遊びも人気。裏なんばど真ん中。Google 4.3（30件）。",
+   "videos": [],
+   "sun": "15:00〜23:00",
+   "sun_class": "evening",
+   "tweets": [
+    {
+     "id": "2061673141257322901",
+     "handle": "todo184",
+     "likes": "473"
+    }
+   ],
+   "links": [
+    {
+     "label": "Google Map",
+     "url": "https://maps.google.com/?cid=1784046433070548512"
+    }
+   ]
+  },
+  {
+   "slug": "tachizushi-nakamoto",
+   "name": "立ち鮨 なかもと",
+   "area": "namba",
+   "cat": "海鮮・寿司",
+   "lat": 34.665955,
+   "lng": 135.504578,
+   "approx": false,
+   "desc": "予約困難な高級鮨「鮨なかもと」の立ち食い業態として2026年1月開店（千日前2-3-24 久富千日プラザ1F）。毛蟹450円・肝のせカワハギ350円に「ヤヴァい」の一言レポがバズ。1貫100円台から本格鮨をつまめる、ひでぞうグループの新星。Google 4.4（35件）。",
+   "videos": [],
+   "sun": "15:00〜23:00",
+   "sun_class": "evening",
+   "sun_note": "木曜定休",
+   "tweets": [
+    {
+     "id": "2061712949530784164",
+     "handle": "tabichef",
+     "likes": "455"
+    }
+   ],
+   "links": [
+    {
+     "label": "Instagram",
+     "url": "https://www.instagram.com/sushi_nakamoto01"
+    },
+    {
+     "label": "Google Map",
+     "url": "https://maps.google.com/?cid=8316300846000017542"
+    }
+   ]
+  },
+  {
    "slug": "xavier",
    "name": "無敵のザビエル",
    "area": "tenma",
