@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>大阪おすすめ居酒屋MAP 〜YouTube居酒屋動画から〜</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🏮%3C/text%3E%3C/svg%3E">
+<meta name="description" content="YouTubeの大阪居酒屋動画 10本から洗い出した梅田・難波・天満・京橋・新世界などの名店29軒をエリア別に地図化。スポットをクリックすると紹介動画が見られ、日曜の営業状況でも絞り込めます。">
+<meta property="og:title" content="大阪おすすめ居酒屋MAP 〜YouTube居酒屋動画から〜">
+<meta property="og:description" content="YouTubeの大阪居酒屋動画 10本から洗い出した梅田・難波・天満・京橋・新世界などの名店29軒をエリア別に地図化。スポットをクリックすると紹介動画が見られ、日曜の営業状況でも絞り込めます。">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
+<style>
+:root{
+  --cream:#fbf3e4; --ink:#3a2a1c; --paper:#fffaf0; --line:#e7d8bd;
+  --accent:#e8543f; --accent2:#b07d2a; --shadow:rgba(80,50,20,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:"Hiragino Maru Gothic ProN","Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;
+  color:var(--ink); background:var(--cream);
+  background-image:radial-gradient(var(--line) 1px,transparent 1px);
+  background-size:22px 22px;
+}
+a{color:var(--accent)}
+header.hero{ text-align:center; padding:26px 16px 10px; position:relative; }
+.hero h1{ margin:0; font-size:clamp(22px,4.4vw,38px); letter-spacing:.02em;
+  text-shadow:2px 2px 0 #fff, 4px 4px 0 var(--line); }
+.hero .leaf{color:#3a9; }
+.hero p.lead{margin:8px auto 4px; max-width:760px; font-size:14.5px; line-height:1.7; color:#5b4631}
+.hero .meta{font-size:12.5px; color:#8a7350; margin-top:6px}
+.hero .meta a{font-weight:700; text-decoration:none}
+.hero .meta a:hover{text-decoration:underline}
+.counts{display:inline-flex; gap:14px; margin-top:10px; flex-wrap:wrap; justify-content:center}
+.counts b{font-size:20px; color:var(--accent)}
+.counts span{font-size:11.5px; display:block; color:#8a7350}
+.counts .pill{background:var(--paper); border:2px solid var(--line); border-radius:14px; padding:6px 14px; box-shadow:2px 2px 0 var(--line)}
+.wrap{max-width:1180px; margin:0 auto; padding:8px 14px 60px}
+.controls{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:14px 0; justify-content:center}
+.controls input[type=search]{ border:2px solid var(--line); background:var(--paper); border-radius:20px; padding:8px 14px;
+  font-size:14px; min-width:200px; outline:none; color:var(--ink) }
+.chipfilter{display:flex; flex-wrap:wrap; gap:6px; justify-content:center}
+.cfilter{ border:2px solid var(--line); background:var(--paper); border-radius:16px; padding:4px 11px;
+  font-size:12.5px; cursor:pointer; user-select:none; transition:.12s; white-space:nowrap }
+.cfilter[data-on="1"]{background:var(--ink); color:#fff; border-color:var(--ink)}
+.cfilter .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle}
+#map{height:60vh; min-height:380px; border:3px solid var(--ink); border-radius:16px;
+  box-shadow:5px 5px 0 var(--shadow); background:#cfe3d8}
+.leaflet-popup-content{margin:10px 12px; font-size:13px}
+.pop-name{font-weight:800; font-size:14px; margin-bottom:3px}
+.pop-area{font-size:11px; color:#8a7350}
+.pop-btn{display:inline-block;margin-top:8px;background:var(--accent);color:#fff;border:none;
+  border-radius:14px;padding:5px 12px;font-size:12px;cursor:pointer;font-weight:700}
+.legend-note{font-size:12px;color:#8a7350;text-align:center;margin:12px 0 4px}
+.area-block{margin-top:22px; border:2px solid var(--line); border-radius:14px; background:var(--paper);
+  box-shadow:3px 3px 0 var(--line); overflow:hidden}
+.area-head{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;
+  border-bottom:2px dashed var(--line)}
+.area-head .swatch{width:16px;height:16px;border-radius:50%;border:2px solid #00000022}
+.area-head h2{margin:0;font-size:16px;flex:1}
+.area-head .n{font-size:12px;color:#8a7350;background:var(--cream);border:1px solid var(--line);
+  border-radius:12px;padding:2px 9px}
+.spotgrid{display:flex;flex-wrap:wrap;gap:8px;padding:13px 14px}
+.spot{ border:2px solid var(--line); background:var(--cream); border-radius:13px; padding:7px 11px;
+  cursor:pointer; transition:.12s; max-width:100%; position:relative }
+.spot:hover{transform:translate(-1px,-1px); box-shadow:2px 2px 0 var(--shadow); border-color:var(--accent)}
+.spot .nm{font-weight:700;font-size:13.5px}
+.spot .ct{font-size:10.5px;color:#8a7350;margin-left:4px}
+.spot .approx{font-size:10px;color:#b07d2a}
+.spot .yt{font-size:10.5px;color:#e62117;font-weight:700;margin-left:6px}
+.spot .hrs{display:block;font-size:10.5px;color:#4a7fb5;margin-top:2px}
+.spot .hrs.closed{color:#b05050}
+.modal-hours{font-size:12.5px;color:#3a5a8a;background:#eef3fb;border:1px solid #cfd9ec;border-radius:10px;padding:7px 10px;margin:0 0 12px}
+footer{text-align:center;font-size:11.5px;color:#8a7350;padding:24px 14px}
+.backdrop{position:fixed;inset:0;background:rgba(40,25,10,.5);display:none;z-index:1000;
+  align-items:flex-start;justify-content:center;padding:24px 12px;overflow:auto}
+.backdrop.on{display:flex}
+.modal{background:var(--paper);border:3px solid var(--ink);border-radius:16px;max-width:560px;width:100%;
+  box-shadow:6px 6px 0 var(--shadow);animation:pop .16s ease}
+@keyframes pop{from{transform:scale(.96);opacity:.4}to{transform:scale(1);opacity:1}}
+.modal-head{display:flex;align-items:flex-start;gap:8px;padding:14px 16px 8px;border-bottom:2px dashed var(--line)}
+.modal-head .ttl{flex:1}
+.modal-head h3{margin:0;font-size:18px}
+.modal-head .sub{font-size:12px;color:#8a7350;margin-top:3px}
+.modal-head .x{background:none;border:none;font-size:24px;cursor:pointer;color:var(--ink);line-height:1}
+.modal-body{padding:12px 16px 16px;max-height:70vh;overflow:auto}
+.modal-desc{font-size:13.5px;line-height:1.7;background:var(--cream);border:1px solid var(--line);
+  border-radius:10px;padding:10px 12px;margin-bottom:12px}
+.modal-note{font-size:11.5px;color:#b07d2a;margin:-6px 0 12px}
+.reply-label{font-size:12px;color:#8a7350;font-weight:700;margin:10px 0 6px}
+.embed-wrap{margin:6px 0 14px}
+.yt-frame{width:100%;aspect-ratio:16/9;border:2px solid var(--line);border-radius:10px;background:#000;display:block}
+.yt-cap{border:2px dashed var(--line);border-top:none;border-radius:0 0 10px 10px;padding:7px 10px;margin:-4px 2px 0;background:#fff}
+.yt-cap .cap-title{font-weight:700;font-size:12.5px;line-height:1.5;color:#5b4631}
+.yt-cap .cap-ch{font-size:11px;color:#8a7350;margin-top:2px}
+.yt-cap .cap-link{font-size:11.5px}
+.loading{font-size:12px;color:#8a7350;padding:6px 2px}
+@media(max-width:600px){ #map{height:52vh} .hero h1{text-shadow:1px 1px 0 #fff,2px 2px 0 var(--line)} }
+</style>
+</head>
+<body>
+<header class="hero">
+  <h1>🏮 大阪おすすめ居酒屋MAP 🐙</h1>
+  <p class="lead">YouTubeの大阪居酒屋動画 <b>10本</b>から洗い出した、梅田・駅前ビル・北新地・難波・天満・京橋・新世界・玉造・新大阪などの名店<b>29軒</b>をエリア別にマッピング。<br>スポット名やマーカーをクリックすると、実際に紹介している<b>YouTube動画</b>がその場で見られます。<b>日曜の営業状況</b>（昼から／夕方〜／定休）でも絞り込めます。</p>
+  <div class="counts">
+    <div class="pill"><b id="cnt-spot">0</b><span>スポット</span></div>
+    <div class="pill"><b id="cnt-area">0</b><span>エリア</span></div>
+    <div class="pill"><b id="cnt-video">0</b><span>出典動画</span></div>
+  </div>
+  <p class="meta">出典: YouTube大阪居酒屋動画 10本（じわじわクセになる世界 / しゅんちゃん【大阪グルメ】 / うに酒ボーイあか / らりまるのお酒日記 / 見取り図ディスカバリーチャンネル / こんちゃん。 / Yunaty日本語 / 必殺おでかけ人 / ハングリーズ【関西・大阪グルメ】 / 瓶ビール班長の旅ログ）</p>
+</header>
+
+<div class="wrap">
+  <div class="controls">
+    <input type="search" id="search" placeholder="🔍 スポット名・説明で検索">
+    <div class="chipfilter" id="catfilter"></div>
+    <div class="chipfilter" id="sunfilter"></div>
+  </div>
+  <div id="map"></div>
+  <p class="legend-note">📍 マーカーの色＝エリア。密集地はまとめて表示され、拡大すると分かれます。マーカーをクリックすると詳細が開きます。</p>
+  <div class="chipfilter" id="areafilter" style="margin-top:14px"></div>
+  <div id="list"></div>
+</div>
+
+<footer>動画の著作権は各チャンネルに帰属します ・ 地図: © OpenStreetMap contributors / Leaflet ・ 一部スポットは「およその位置」です ・ 営業時間は2026年7月調査時点（変更の可能性あり。訪問前に要確認）</footer>
+
+<div class="backdrop" id="backdrop">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <div class="ttl"><h3 id="m-title"></h3><div class="sub" id="m-sub"></div></div>
+      <button class="x" id="m-close" aria-label="閉じる">×</button>
+    </div>
+    <div class="modal-body" id="m-body"></div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+<script>
+window.__SPOTMAP__ = {"config": {"title": "大阪おすすめ居酒屋MAP 〜YouTube居酒屋動画から〜", "description": "YouTubeの大阪居酒屋動画 10本から洗い出した梅田・難波・天満・京橋・新世界などの名店29軒をエリア別に地図化。スポットをクリックすると紹介動画が見られ、日曜の営業状況でも絞り込めます。", "favicon": "🏮", "h1": "🏮 大阪おすすめ居酒屋MAP 🐙", "lead": "YouTubeの大阪居酒屋動画 <b>10本</b>から洗い出した、梅田・駅前ビル・北新地・難波・天満・京橋・新世界・玉造・新大阪などの名店<b>29軒</b>をエリア別にマッピング。<br>スポット名やマーカーをクリックすると、実際に紹介している<b>YouTube動画</b>がその場で見られます。<b>日曜の営業状況</b>（昼から／夕方〜／定休）でも絞り込めます。", "meta": "出典: YouTube大阪居酒屋動画 10本（じわじわクセになる世界 / しゅんちゃん【大阪グルメ】 / うに酒ボーイあか / らりまるのお酒日記 / 見取り図ディスカバリーチャンネル / こんちゃん。 / Yunaty日本語 / 必殺おでかけ人 / ハングリーズ【関西・大阪グルメ】 / 瓶ビール班長の旅ログ）", "footer": "動画の著作権は各チャンネルに帰属します ・ 地図: © OpenStreetMap contributors / Leaflet ・ 一部スポットは「およその位置」です ・ 営業時間は2026年7月調査時点（変更の可能性あり。訪問前に要確認）", "map_center": [34.685, 135.507], "map_zoom": 12}, "areas": [{"id": "umeda", "name": "梅田・北新地・福島", "color": "#e8543f"}, {"id": "namba", "name": "難波・心斎橋・大国町", "color": "#3f7fd6"}, {"id": "tenma", "name": "天満・南森町", "color": "#2f9e7d"}, {"id": "kyobashi", "name": "京橋・玉造上町", "color": "#7b5cd6"}, {"id": "south", "name": "新世界・天下茶屋", "color": "#e0489a"}, {"id": "shinosaka", "name": "新大阪", "color": "#b07d2a"}, {"id": "takatsuki", "name": "高槻", "color": "#708090"}], "spots": [{"slug": "bishoku-maimon", "name": "美食米門 梅田", "area": "umeda", "cat": "洗練・創作", "lat": 34.700424, "lng": 135.495209, "approx": false, "desc": "一品一品が絶品のおしゃれな創作和食店（梅田2-2-22 ハービスPLAZA ENT 5F）。ハイクオリティな料理と洗練された空間で、デートや家族との大切な食事に最適。「大阪の神居酒屋7選」第7位。", "videos": ["WRUEaQ3V0b8"], "sun": "11:00〜15:00 / 17:00〜22:00", "sun_class": "lunch", "sun_note": "土日祝も平日と同一営業。不定休（ハービスPLAZA ENTに準ずる）"}, {"slug": "yasu", "name": "地酒だいにんぐ やす", "area": "umeda", "cat": "洗練・創作", "lat": 34.703724, "lng": 135.502426, "approx": false, "desc": "休日問わず毎日大満席で、当日予約はほぼ不可能な梅田・堂山の隠れ家居酒屋（堂山町7-18 伊勢屋ビル3F）。創作料理と全国の地酒が圧倒的な美味しさと評判。", "videos": ["jM46YJkN5bY"], "sun": "18:00〜翌1:00", "sun_class": "evening", "sun_note": "不定休のため要予約確認。「18:00〜眠くなるまで」との記載も"}, {"slug": "hanakujira", "name": "おでん 花くじら 本店", "area": "umeda", "cat": "おでん", "lat": 34.69458, "lng": 135.487122, "approx": false, "desc": "行列必至、大阪を代表するおでんの名店（福島2-8-2）。定番の大根やロールキャベツは並んででも食べる価値あり。「大阪の神居酒屋7選」第6位。", "videos": ["WRUEaQ3V0b8"], "sun": "16:00〜23:00", "sun_class": "evening", "sun_note": "日祝も休まず営業（L.O.22:30）。年末年始と8月は休業"}, {"slug": "birichan2", "name": "大衆酒場 びりちゃん2", "area": "umeda", "cat": "立ち飲み・せんべろ", "lat": 34.698402, "lng": 135.499878, "approx": false, "desc": "大阪駅前第3ビルB1の超格安酒場（梅田1-1-3）。ハッピーアワーはレモンサワー88円・ハイボール99円。クリーミーな洋風ソースの「おでん大根」90円、半熟卵のスコッチエッグも外せない。", "videos": ["ryOYm3XFh5U"], "sun": "12:00〜23:00", "sun_class": "lunch", "sun_note": "土日祝12:00開店（平日14:00）。毎日18時までハッピーアワー"}, {"slug": "inaseya", "name": "立ち飲み いなせや 大阪駅前第3ビル店", "area": "umeda", "cat": "立ち飲み・せんべろ", "lat": 34.698522, "lng": 135.49999, "approx": false, "desc": "ビール1杯350円から楽しめる駅前第3ビルの活気ある立ち飲み（梅田1-1-3 B1F）。おばんざい3種盛や刺身盛り合わせも揃い、名物「みそどてビフカツサンド」は絶対に注文すべき一品。", "videos": ["ryOYm3XFh5U"], "sun": "13:00〜22:30", "sun_class": "lunch", "sun_note": "土日13:00開店（平日15:00）。月曜定休"}, {"slug": "sashisu", "name": "すし酒場 さしす", "area": "umeda", "cat": "海鮮・寿司", "lat": 34.698282, "lng": 135.499766, "approx": false, "desc": "駅前第3ビルB1の大行列すし酒場（梅田1-1-3）。あふれんばかりのトロが巻かれた名物「とろ鉄火巻」（1,078円）や、とろける「生ウニと国産牛の炙り」が絶品。", "videos": ["hQPyNuUHIQQ"], "sun": "12:00〜23:00", "sun_class": "lunch", "sun_note": "土日祝12:00開店（平日14:00）。不定休・年始休業あり"}, {"slug": "hyozo", "name": "ひょうそう（兵蔵）", "area": "umeda", "cat": "大衆・名物", "lat": 34.697845, "lng": 135.495743, "approx": false, "desc": "物価高でも値上げせず、ほぼ全品350円で提供する北新地の最強コスパ居酒屋（曽根崎新地1-3-19 北新地ビルディング2F）。海鮮からお肉まで、安さだけでなく味もボリュームも大満足。", "videos": ["jM46YJkN5bY"], "sun": "定休日", "sun_class": "closed", "sun_note": "日曜定休。月〜土15:30〜24:00"}, {"slug": "yamato", "name": "酒場 やまと", "area": "umeda", "cat": "大衆・名物", "lat": 34.702095, "lng": 135.500168, "approx": false, "desc": "コスパ抜群の梅田の酒場（小松原町2-4 大阪富国生命ビルB2F）。新鮮な刺身5種盛り（990円）やこだわりの明石焼き（690円）がおすすめ。現金のみ・行列必至。「大阪の神居酒屋7選」第5位。", "videos": ["WRUEaQ3V0b8"], "sun": "11:00〜22:00", "sun_class": "lunch", "sun_note": "毎日11:00〜22:00（L.O.21:00）。定休はビルに準ずる＋盆・年末年始"}, {"slug": "tekken", "name": "哲剣（てっけん）", "area": "namba", "cat": "バル・個性派", "lat": 34.661575, "lng": 135.500565, "approx": false, "desc": "見取り図・盛山さんのNo.1おすすめ店（難波中2-8-86）。アヒージョや前菜盛り合わせなど「全メシが美味い」と豪語するカジュアルイタリアンバル。非常に人気のため予約推奨。", "videos": ["zjgwj4qw_QE"], "sun": "定休日", "sun_class": "closed", "sun_note": "日曜定休（月曜祝日の場合は日曜営業・月曜休の振替あり）。月〜土祝17:00〜23:30"}, {"slug": "mitsuwaya", "name": "みつわや酒店", "area": "namba", "cat": "大衆・名物", "lat": 34.656593, "lng": 135.499207, "approx": false, "desc": "見取り図・リリーさんのNo.1おすすめ店（大国町・敷津東2-4-4）。木津卸売市場のそばで深夜3時から昼12時まで営業する超個性派。安くて新鮮な魚が朝方から楽しめる昭和レトロな大衆酒場。", "videos": ["zjgwj4qw_QE"], "sun": "定休日", "sun_class": "closed", "sun_note": "日曜定休（木津市場の休みに準ずる）。平日は深夜3:00〜昼12:00＋17:00〜20:30（開店時刻は情報源により3:00/5:00と揺れあり）"}, {"slug": "tegetege", "name": "居酒屋 てげてげ", "area": "namba", "cat": "大衆・名物", "lat": 34.662197, "lng": 135.509155, "approx": false, "desc": "チキン南蛮など絶品の宮崎料理が楽しめる、若手芸人の打ち上げ定番店（日本橋東1-1-9）。鍋や辛麺など南九州の味が揃う。", "videos": ["zjgwj4qw_QE"], "sun": "18:00〜22:00", "sun_class": "evening", "sun_note": "全曜日18:00〜22:00営業"}, {"slug": "atariya", "name": "立ち呑み あたりや食堂 なんば店", "area": "namba", "cat": "立ち飲み・せんべろ", "lat": 34.666206, "lng": 135.499298, "approx": false, "desc": "天ぷらや新鮮な魚介が絶品の、一品ごとのクオリティが非常に高い立ち飲み屋（難波4-6-5）。見取り図もおすすめする名店。", "videos": ["zjgwj4qw_QE"], "sun": "15:00〜24:00", "sun_class": "evening", "sun_note": "全曜日15:00〜24:00（L.O.23:30）・定休なし。閉店時刻は〜翌1:00表記の情報源もあり"}, {"slug": "hidezo", "name": "魚屋ひでぞう 別館", "area": "namba", "cat": "海鮮・寿司", "lat": 34.664196, "lng": 135.504074, "approx": false, "desc": "魚の卸業を営む会社が経営する新鮮魚介の人気店（難波千日前4-19 2F）。雲丹と湯葉、お造り、牡蠣のスープ、寿司など贅沢な構成の飲み放題付き5,000円コースが超高コスパ。", "videos": ["aPsidzKkSxk"], "sun": "15:00〜23:00", "sun_class": "evening", "sun_note": "火曜定休。近隣に立ち呑み店・難波店などの系列あり"}, {"slug": "nakamoto", "name": "鮨 なかもと", "area": "namba", "cat": "海鮮・寿司", "lat": 34.664646, "lng": 135.505157, "approx": false, "desc": "赤酢のシャリを使った本格寿司を1貫250円〜とリーズナブルに楽しめるおしゃれな寿司居酒屋（難波千日前4-35）。カワハギ肝和えや白海老・のどぐろが人気でデートにも最適。ひでぞうグループ。", "videos": ["aPsidzKkSxk"], "sun": "17:00〜23:00", "sun_class": "evening", "sun_note": "全曜日17:00〜23:00（L.O.22:30）・不定休"}, {"slug": "kadoya", "name": "豚足のかどや", "area": "namba", "cat": "大衆・名物", "lat": 34.66544, "lng": 135.498337, "approx": false, "desc": "旨味が爆発する「豚足」が名物のディープな大衆居酒屋（難波中1-4-15）。お買い物帰りの一杯に最適で、昼から格安で絶品グルメとビールが楽しめる。「大阪の神居酒屋7選」第3位。", "videos": ["WRUEaQ3V0b8", "W3sB3tmf4o4"], "sun": "11:00〜22:00", "sun_class": "lunch", "sun_note": "2025年2月から無休（旧情報では火曜定休）。L.O.21:30"}, {"slug": "hide", "name": "和洋酒菜 ひで", "area": "namba", "cat": "洗練・創作", "lat": 34.671654, "lng": 135.502274, "approx": false, "desc": "お酒好きから圧倒的に支持されている、絶品和洋折衷料理の最高峰（心斎橋筋2-1-3）。完全予約制のカウンター6席。「大阪の神居酒屋7選」堂々の第1位。", "videos": ["WRUEaQ3V0b8"], "sun": "13:00〜（2部制 13:00/17:00）", "sun_class": "lunch", "sun_note": "完全予約制。土日は1部13:00/2部17:00の2回転（一休の予約枠で確認）"}, {"slug": "marcus", "name": "あずき色のマーカス", "area": "tenma", "cat": "立ち飲み・せんべろ", "lat": 34.706261, "lng": 135.51178, "approx": false, "desc": "路地裏に静かに佇む、大人の隠れ家のような立ち飲み店（天神橋4-12-11）。全国から厳選された豊富な日本酒と、それに合わせる工夫を凝らしたアテが揃う。ちょい飲み・はしご酒に最適。", "videos": ["_AnT6QnwSog"], "sun": "15:00〜23:00", "sun_class": "evening", "sun_note": "定休は年末年始のみ。閉店時刻は23:00/23:30と情報源に揺れあり"}, {"slug": "daiyame", "name": "備長炉端 だいやめ 天満店", "area": "tenma", "cat": "海鮮・寿司", "lat": 34.704433, "lng": 135.511002, "approx": false, "desc": "目の前で焼き上げる臨場感抜群の炉端焼き（天神橋4-8-6 サンプラザビル6F）。「特大えび」やじっくり焼かれた「ぶりの原始焼き」が格別。天満で海鮮を食べるなら外せない名店。", "videos": ["_AnT6QnwSog"], "sun": "12:00〜23:30", "sun_class": "lunch", "sun_note": "土日祝12:00開店。月曜定休（祝日の場合は翌火曜休）"}, {"slug": "kamonn", "name": "IZAKAYA KAMONN", "area": "tenma", "cat": "海鮮・寿司", "lat": 34.709511, "lng": 135.511841, "approx": false, "desc": "釣り好きの店主が自ら釣った超新鮮な魚介を堪能できる居酒屋（天神橋6-5-27）。名物「アジフライ」は圧倒的な美味しさ。2階では釣具も販売。", "videos": ["_AnT6QnwSog"], "sun": "17:00〜翌1:00", "sun_class": "evening", "sun_note": "不定休（釣行等）。Instagramで当日確認推奨"}, {"slug": "gogasha53", "name": "大衆居酒屋 GoGASHA53", "area": "tenma", "cat": "おでん", "lat": 34.699879, "lng": 135.511536, "approx": false, "desc": "おしゃれな雰囲気の天満の人気店（天神橋3-2-23）。関西風の上品な出汁が染みた「おでん 大根と厚揚げ」（358円）と、天ぷら風に揚げたナスに麻婆餡をかけたオリジナル「サクサク麻婆茄子」（499円）が名物。", "videos": ["koibspoNzoY"], "sun": "13:00〜23:00", "sun_class": "lunch", "sun_note": "日祝13:00〜23:00（料理L.O.22:00）。一部不定休あり"}, {"slug": "naodaime", "name": "お魚と日本酒 七代目なお 天満店", "area": "tenma", "cat": "海鮮・寿司", "lat": 34.70359, "lng": 135.51149, "approx": false, "desc": "海鮮に特化した深夜3時まで営業の活気あふれる店（天神橋4-6-19）。お通しにタイ・イサキ・ヒラメ・ハマチの豪華刺身4点盛りが出てくる。白子ポン酢や大粒の生牡蠣も絶品。", "videos": ["koibspoNzoY"], "sun": "16:00〜翌3:00", "sun_class": "evening", "sun_note": "定休は隔週水曜のため日曜は営業。休みはInstagramで告知"}, {"slug": "torosaba", "name": "大衆酒場 とろ鯖 南森町店", "area": "tenma", "cat": "海鮮・寿司", "lat": 34.698662, "lng": 135.511597, "approx": false, "desc": "サバ料理を全面に押し出す専門店（天神橋3-2-37）。サバの脂と旨みが凝縮された濃厚な「鯖出汁の湯豆腐」（380円）や、脂の乗りが抜群の「とろさば塩焼き」が絶品。SABAR系列の大衆酒場業態。", "videos": ["koibspoNzoY"], "sun": "12:00〜23:30", "sun_class": "lunch", "sun_note": "土日祝12:00開店。定休は年末年始のみ"}, {"slug": "toyo", "name": "居酒屋 とよ", "area": "kyobashi", "cat": "立ち飲み・せんべろ", "lat": 34.697193, "lng": 135.53537, "approx": false, "desc": "国内外から観光客が押し寄せる京橋の大人気青空立ち飲み屋台（東野田町3-2-26）。名物大将がガスバーナーで豪快に炙るマグロやいくらを格安で楽しめる。飲み物や箸はセルフサービス。「大阪の神居酒屋7選」第2位。", "videos": ["WRUEaQ3V0b8", "RDaMAhr6LPU"], "sun": "定休日", "sun_class": "closed", "sun_note": "営業は火水金13:00〜19:00・土12:00〜19:00のみ。月木日祝定休"}, {"slug": "nagahori", "name": "ながほり", "area": "kyobashi", "cat": "洗練・創作", "lat": 34.676514, "lng": 135.525726, "approx": false, "desc": "芸能人もお忍びで通う、丁寧につくられた料理が「天才的」な隠れ名店（上町1-3-9・玉造駅徒歩約10分）。「大阪の神居酒屋7選」第4位。", "videos": ["WRUEaQ3V0b8"], "sun": "定休日", "sun_class": "closed", "sun_note": "日・月・祝定休。火〜金17:00〜22:00・土13:00〜22:00"}, {"slug": "tengu", "name": "てんぐ", "area": "south", "cat": "大衆・名物", "lat": 34.649773, "lng": 135.506073, "approx": false, "desc": "新世界ジャンジャン横丁の老舗串かつ店（恵美須東3-4-12）。白味噌ベースで柔らかく煮込まれた名物「どて焼き」と、サクサク衣の「串かつ」「エビ」を二度漬け禁止のソースで。これぞ大阪の味。", "videos": ["hQPyNuUHIQQ"], "sun": "10:30〜20:00", "sun_class": "lunch", "sun_note": "月曜定休。火〜日10:30〜20:00（L.O.19:00）"}, {"slug": "maruyone", "name": "おでん まる米", "area": "south", "cat": "おでん", "lat": 34.638176, "lng": 135.496262, "approx": false, "desc": "具材によって出汁を変える並々ならぬこだわりのおでん屋（天下茶屋・花園南2-7-30）。〆にいただく名物「とう飯（豆腐をご飯に乗せたもの）」はここでしか味わえない必食メニュー。", "videos": ["jM46YJkN5bY"], "sun": "12:00〜21:00", "sun_class": "lunch", "sun_note": "毎日12:00〜21:00（L.O.20:30）。盆・正月休み・臨時休業あり"}, {"slug": "fuji", "name": "魚屋スタンドふじ", "area": "shinosaka", "cat": "海鮮・寿司", "lat": 34.731777, "lng": 135.498444, "approx": false, "desc": "「海鮮が安いだけの店」がコンセプトの超高コスパ店（新大阪駅地下・新なにわ大食堂内）。トロさわら（638円）など高品質な魚介が低価格で楽しめる。出張や旅行の合間に最適。", "videos": ["aPsidzKkSxk"], "sun": "11:30〜23:00", "sun_class": "lunch", "sun_note": "全曜日11:30〜23:00（L.O.22:00）・無休"}, {"slug": "kawakita", "name": "川北商店 新大阪店", "area": "shinosaka", "cat": "大衆・名物", "lat": 34.7319, "lng": 135.49856, "approx": false, "desc": "新大阪駅地下の焼き鳥店（新なにわ大食堂内）。ビール・小鉢・串盛り5本付き「ちょい飲み焼き盛りセット」1,518円が人気。ラーメン屋レベルのクリーミーな絶品スープの「鶏そば定食」（1,188円）もおすすめ。", "videos": ["aPsidzKkSxk"], "sun": "10:00〜23:00", "sun_class": "lunch", "sun_note": "全曜日10:00〜23:00（L.O.21:45）。定休は施設に準ずる"}, {"slug": "stand-b", "name": "スタンドB", "area": "takatsuki", "cat": "バル・個性派", "lat": 34.850071, "lng": 135.621201, "approx": true, "desc": "国産の生牡蠣をはじめとする牡蠣料理の食べ放題＋飲み放題が4,480円〜という破格の牡蠣スタンド（高槻市高槻町14-8）。カキフライから創作料理、冬の牡蠣鍋と〆の雑炊まで牡蠣を心ゆくまで堪能できる。", "videos": ["jM46YJkN5bY"], "sun": "12:00〜翌0:00", "sun_class": "lunch", "sun_note": "不定休。食べ飲み放題は通常4,980円（17時台/21時以降の予約で4,480円）。※動画では店舗所在地の明言がなく、条件に合致する唯一の店として高槻店を掲載"}], "videos": {"WRUEaQ3V0b8": {"title": "一度は絶対に行くべき大阪の神居酒屋7選　#おすすめ #保存", "channel": "じわじわクセになる世界"}, "ryOYm3XFh5U": {"title": "大阪第3ビル飲み歩き#大阪居酒屋#梅田居酒屋#大阪第3ビル#居酒屋#飲み歩き", "channel": "こんちゃん。"}, "koibspoNzoY": {"title": "大阪・天満でひとり飲み｜居酒屋７軒飲み歩きしたらコスパ最強すぎるお店ばかりでした…！｜関西グルメ｜昼飲み｜はしご酒", "channel": "らりまるのお酒日記"}, "jM46YJkN5bY": {"title": "ここ行けば間違いない大阪居酒屋まとめ４選", "channel": "しゅんちゃん【大阪グルメ】"}, "RDaMAhr6LPU": {"title": "世界中から大人気！名物大将の立ち飲み", "channel": "ハングリーズ【関西・大阪グルメ】"}, "hQPyNuUHIQQ": {"title": "【2025最新版】大阪自由行必看！精選美食店推薦！｜難波｜心齋橋｜通天閣｜章魚燒 etc", "channel": "Yunaty日本語"}, "aPsidzKkSxk": {"title": "【大阪居酒屋】コスパ最高安くて美味い居酒屋4選！", "channel": "うに酒ボーイあか"}, "zjgwj4qw_QE": {"title": "【大阪難波の夜ごはんはココ】見取り図オススメの難波の居酒屋！", "channel": "見取り図ディスカバリーチャンネル"}, "_AnT6QnwSog": {"title": "【保存必須】一度は絶対に行ってほしい！超絶ウマい大阪・天満の神居酒屋6選#関西 #居酒屋#グルメ #おすすめ", "channel": "必殺おでかけ人"}, "W3sB3tmf4o4": {"title": "【大阪ひとり旅】老舗の名酒場とローカルグルメ巡り・大阪12軒食べ飲み歩き", "channel": "瓶ビール班長の旅ログ"}}};
+const DATA = window.__SPOTMAP__;
+const CFG = DATA.config || {};
+const AREAS = DATA.areas, SPOTS = DATA.spots, VIDEOS = DATA.videos;
+const areaById = {}; AREAS.forEach(a=>areaById[a.id]=a);
+const CATS = [...new Set(SPOTS.filter(s=>s.cat!=='会場').map(s=>s.cat))];
+const CAT_COLOR = {"洗練・創作":"#7b5cd6","おでん":"#e8543f","海鮮・寿司":"#3f7fd6","立ち飲み・せんべろ":"#b07d2a","大衆・名物":"#2f9e7d","バル・個性派":"#e0489a","会場":"#000"};
+
+document.getElementById('cnt-spot').textContent = SPOTS.length;
+document.getElementById('cnt-area').textContent = AREAS.filter(a=>SPOTS.some(s=>s.area===a.id)).length;
+document.getElementById('cnt-video').textContent = new Set(SPOTS.flatMap(s=>s.videos)).size;
+
+const center = CFG.map_center || [36.55,136.60];
+const map = L.map('map',{scrollWheelZoom:true}).setView(center, CFG.map_zoom || 10);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18, attribution:'© OpenStreetMap contributors'}).addTo(map);
+const cluster = L.markerClusterGroup({maxClusterRadius:38, spiderfyOnMaxZoom:true});
+const markerBySlug = {};
+SPOTS.forEach(s=>{
+  const col = areaById[s.area] ? areaById[s.area].color : '#888';
+  const isVenue = s.cat==='会場';
+  const m = L.circleMarker([s.lat,s.lng],{ radius:isVenue?9:6, color:'#00000055', weight:isVenue?3:1.5,
+    fillColor: isVenue?'#111':col, fillOpacity:.92 });
+  m.bindPopup(`<div class="pop-name">${isVenue?'🎤 ':''}${esc(s.name)}</div>`+
+    `<div class="pop-area">${esc(areaById[s.area].name)} ・ ${esc(s.cat)}${s.approx?' ・ およその位置':''}</div>`+
+    (s.sun?`<div class="pop-area">🕒 日曜: ${esc(s.sun)}</div>`:'')+
+    (s.videos.length?`<button class="pop-btn" onclick="openModal('${s.slug}')">紹介動画を見る (${s.videos.length})</button>`:''));
+  m.spotSlug=s.slug; markerBySlug[s.slug]=m; cluster.addLayer(m);
+});
+map.addLayer(cluster);
+
+const SUN_META = {
+  "lunch":   {label:"☀️ 日曜昼から営業", color:"#e8a13f"},
+  "evening": {label:"🌙 日曜夕方〜営業", color:"#5b6ee1"},
+  "closed":  {label:"🚫 日曜定休",       color:"#9a8f80"},
+  "unknown": {label:"❓ 日曜営業不明",   color:"#c9bda9"},
+};
+const sunOf = s => s.sun_class || 'unknown';
+const SUNS = ["lunch","evening","closed","unknown"].filter(k=>SPOTS.some(s=>s.cat!=='会場' && sunOf(s)===k));
+let activeCats = new Set(CATS), activeAreas = new Set(AREAS.map(a=>a.id)), activeSuns = new Set(SUNS), q='';
+const sunWrap=document.getElementById('sunfilter');
+SUNS.forEach(k=>{
+  const el=document.createElement('div'); el.className='cfilter'; el.dataset.on='1';
+  el.innerHTML=`<span class="dot" style="background:${SUN_META[k].color}"></span>${SUN_META[k].label}`;
+  el.onclick=()=>{ if(activeSuns.has(k)){activeSuns.delete(k);el.dataset.on='0';}else{activeSuns.add(k);el.dataset.on='1';} render(); };
+  sunWrap.appendChild(el);
+});
+const catWrap=document.getElementById('catfilter');
+CATS.forEach(c=>{
+  const el=document.createElement('div'); el.className='cfilter'; el.dataset.on='1'; el.dataset.cat=c;
+  el.innerHTML=`<span class="dot" style="background:${CAT_COLOR[c]||'#888'}"></span>${c}`;
+  el.onclick=()=>{ if(activeCats.has(c)){activeCats.delete(c);el.dataset.on='0';}else{activeCats.add(c);el.dataset.on='1';} render(); };
+  catWrap.appendChild(el);
+});
+const areaWrap=document.getElementById('areafilter');
+AREAS.filter(a=>SPOTS.some(s=>s.area===a.id)).forEach(a=>{
+  const el=document.createElement('div'); el.className='cfilter'; el.dataset.on='1';
+  el.innerHTML=`<span class="dot" style="background:${a.color}"></span>${a.name}`;
+  el.onclick=()=>{ if(activeAreas.has(a.id)){activeAreas.delete(a.id);el.dataset.on='0';}else{activeAreas.add(a.id);el.dataset.on='1';} render(); };
+  areaWrap.appendChild(el);
+});
+document.getElementById('search').addEventListener('input',e=>{q=e.target.value.trim().toLowerCase(); render();});
+
+function visible(s){
+  if(s.cat!=='会場' && !activeCats.has(s.cat)) return false;
+  if(s.cat!=='会場' && !activeSuns.has(sunOf(s))) return false;
+  if(!activeAreas.has(s.area)) return false;
+  if(q && !(s.name.toLowerCase().includes(q)||s.desc.toLowerCase().includes(q))) return false;
+  return true;
+}
+const listEl=document.getElementById('list');
+function render(){
+  Object.entries(markerBySlug).forEach(([slug,m])=>{
+    const s=SPOTS.find(x=>x.slug===slug);
+    if(visible(s)){ if(!cluster.hasLayer(m)) cluster.addLayer(m);} else { if(cluster.hasLayer(m)) cluster.removeLayer(m);}
+  });
+  listEl.innerHTML='';
+  AREAS.forEach(a=>{
+    const items=SPOTS.filter(s=>s.area===a.id && visible(s));
+    if(!items.length) return;
+    const block=document.createElement('div'); block.className='area-block';
+    const head=document.createElement('div'); head.className='area-head';
+    head.innerHTML=`<span class="swatch" style="background:${a.color}"></span><h2>${esc(a.name)}</h2><span class="n">${items.length}</span>`;
+    const grid=document.createElement('div'); grid.className='spotgrid';
+    head.onclick=()=>{ grid.style.display = grid.style.display==='none'?'flex':'none'; };
+    items.forEach(s=>{
+      const sp=document.createElement('div'); sp.className='spot';
+      sp.innerHTML=`<span class="nm">${s.cat==='会場'?'🎤 ':''}${esc(s.name)}</span>`+
+        `<span class="ct">${esc(s.cat)}</span>`+
+        (s.videos.length?`<span class="yt">▶${s.videos.length}</span>`:'')+
+        (s.approx?'<span class="approx"> ・およその位置</span>':'')+
+        (s.sun?`<span class="hrs${sunOf(s)==='closed'?' closed':''}">🕒 日曜 ${esc(s.sun)}</span>`:'');
+      sp.addEventListener('click',()=>openModal(s.slug));
+      grid.appendChild(sp);
+    });
+    block.appendChild(head); block.appendChild(grid); listEl.appendChild(block);
+  });
+}
+render();
+
+const backdrop=document.getElementById('backdrop');
+let lastSlug=null;
+function openModal(slug){
+  const s=SPOTS.find(x=>x.slug===slug); if(!s) return;
+  if(backdrop.classList.contains('on') && lastSlug===slug) return;
+  lastSlug=slug;
+  document.getElementById('m-title').textContent=(s.cat==='会場'?'🎤 ':'')+s.name;
+  document.getElementById('m-sub').textContent=`${areaById[s.area].name} ・ ${s.cat}`;
+  const body=document.getElementById('m-body');
+  let html=`<div class="modal-desc">${esc(s.desc)}</div>`;
+  if(s.sun) html+=`<div class="modal-hours">🕒 日曜の営業: <b>${esc(s.sun)}</b>${s.sun_note?` ・ ${esc(s.sun_note)}`:''}<br><span style="font-size:11px;color:#8a7350">※2026年7月調査時点。変更の可能性があるため訪問前に要確認</span></div>`;
+  if(s.approx) html+=`<div class="modal-note">※ 番地が確定できなかったため、エリア内のおよその位置に配置しています。</div>`;
+  if(s.videos.length){
+    html+=`<div class="reply-label">この場所が登場するYouTube動画（${s.videos.length}本）</div>`;
+    s.videos.forEach(id=>{
+      const v=VIDEOS[id]||{};
+      html+=`<div class="embed-wrap">`+
+        `<iframe class="yt-frame" loading="lazy" src="https://www.youtube-nocookie.com/embed/${esc(id)}" `+
+        `title="${esc(v.title||'YouTube video')}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`+
+        `<div class="yt-cap"><div class="cap-title">${esc(v.title||'')}</div>`+
+          `<div class="cap-ch">${esc(v.channel||'')}</div>`+
+          `<a class="cap-link" href="https://www.youtube.com/watch?v=${esc(id)}" target="_blank" rel="noopener">▶ YouTubeで開く ↗</a></div>`+
+        `</div>`;
+    });
+  } else { html+=`<div class="loading">このスポットに紐づく個別動画はありません。</div>`; }
+  body.innerHTML=html; body.scrollTop=0; backdrop.classList.add('on');
+}
+function closeModal(){ backdrop.classList.remove('on'); lastSlug=null; document.getElementById('m-body').innerHTML=''; }
+document.getElementById('m-close').onclick=closeModal;
+backdrop.addEventListener('click',e=>{ if(e.target===backdrop) closeModal(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+window.openModal=openModal;
+function esc(s){return (s==null?'':String(s)).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+</script>
+</body>
+</html>
