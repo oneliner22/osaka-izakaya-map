@@ -70,6 +70,14 @@ header.hero{ text-align:center; padding:26px 16px 10px; position:relative; }
 .spot .ct{font-size:10.5px;color:#8a7350;margin-left:4px}
 .spot .approx{font-size:10px;color:#b07d2a}
 .spot .yt{font-size:10.5px;color:#e62117;font-weight:700;margin-left:6px}
+.spot .xp{font-size:10.5px;color:#1d9bf0;font-weight:700;margin-left:6px}
+.fallback{border:2px dashed var(--line);border-radius:10px;padding:10px 12px;margin:8px 0;background:#fff}
+.fallback .fb-user{font-weight:700;font-size:12.5px;color:#5b4631}
+.fallback .fb-text{font-size:13px;line-height:1.6;margin:5px 0;color:#4c463b}
+.fallback .fb-link{font-size:11.5px}
+.tweet-slot{display:flex;justify-content:center}
+.modal-links{display:flex;flex-wrap:wrap;gap:10px;font-size:12px;margin:0 0 12px}
+.modal-links a{color:#8c4a12;text-decoration:none;border-bottom:1px solid #d8b98f;padding-bottom:1px}
 .spot .hrs{display:block;font-size:10.5px;color:#4a7fb5;margin-top:2px}
 .spot .hrs.closed{color:#b05050}
 .modal-hours{font-size:12.5px;color:#3a5a8a;background:#eef3fb;border:1px solid #cfd9ec;border-radius:10px;padding:7px 10px;margin:0 0 12px}
@@ -108,6 +116,7 @@ footer{text-align:center;font-size:11.5px;color:#8a7350;padding:24px 14px}
     <div class="pill"><b id="cnt-spot">0</b><span>スポット</span></div>
     <div class="pill"><b id="cnt-area">0</b><span>エリア</span></div>
     <div class="pill"><b id="cnt-video">0</b><span>出典動画</span></div>
+    <div class="pill"><b id="cnt-tweet">0</b><span>出典X投稿</span></div>
   </div>
   <p class="meta">__META__</p>
 </header>
@@ -138,6 +147,7 @@ footer{text-align:center;font-size:11.5px;color:#8a7350;padding:24px 14px}
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+<script>window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.getElementById(id)){return window.twttr;}js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);t=window.twttr||{};t._e=[];t.ready=function(f){t._e.push(f);};return t;}(document,"script","twitter-wjs"));</script>
 <script>
 /*__DATA__*/
 const DATA = window.__SPOTMAP__;
@@ -150,6 +160,7 @@ const CAT_COLOR = {"洗練・創作":"#7b5cd6","おでん":"#e8543f","海鮮・�
 document.getElementById('cnt-spot').textContent = SPOTS.length;
 document.getElementById('cnt-area').textContent = AREAS.filter(a=>SPOTS.some(s=>s.area===a.id)).length;
 document.getElementById('cnt-video').textContent = new Set(SPOTS.flatMap(s=>s.videos)).size;
+document.getElementById('cnt-tweet').textContent = new Set(SPOTS.flatMap(s=>s.tweets||[]).map(t=>t.id)).size;
 
 const center = CFG.map_center || [36.55,136.60];
 const map = L.map('map',{scrollWheelZoom:true}).setView(center, CFG.map_zoom || 10);
@@ -164,7 +175,7 @@ SPOTS.forEach(s=>{
   m.bindPopup(`<div class="pop-name">${isVenue?'🎤 ':''}${esc(s.name)}</div>`+
     `<div class="pop-area">${esc(areaById[s.area].name)} ・ ${esc(s.cat)}${s.approx?' ・ およその位置':''}</div>`+
     (s.sun?`<div class="pop-area">🕒 日曜: ${esc(s.sun)}</div>`:'')+
-    (s.videos.length?`<button class="pop-btn" onclick="openModal('${s.slug}')">紹介動画を見る (${s.videos.length})</button>`:''));
+    ((s.videos.length||(s.tweets||[]).length)?`<button class="pop-btn" onclick="openModal('${s.slug}')">出典を見る (${s.videos.length+(s.tweets||[]).length})</button>`:''));
   m.spotSlug=s.slug; markerBySlug[s.slug]=m; cluster.addLayer(m);
 });
 map.addLayer(cluster);
@@ -228,6 +239,7 @@ function render(){
       sp.innerHTML=`<span class="nm">${s.cat==='会場'?'🎤 ':''}${esc(s.name)}</span>`+
         `<span class="ct">${esc(s.cat)}</span>`+
         (s.videos.length?`<span class="yt">▶${s.videos.length}</span>`:'')+
+        ((s.tweets||[]).length?`<span class="xp">𝕏${s.tweets.length}</span>`:'')+
         (s.approx?'<span class="approx"> ・およその位置</span>':'')+
         (s.sun?`<span class="hrs${sunOf(s)==='closed'?' closed':''}">🕒 日曜 ${esc(s.sun)}</span>`:'');
       sp.addEventListener('click',()=>openModal(s.slug));
@@ -250,6 +262,10 @@ function openModal(slug){
   let html=`<div class="modal-desc">${esc(s.desc)}</div>`;
   if(s.sun) html+=`<div class="modal-hours">🕒 日曜の営業: <b>${esc(s.sun)}</b>${s.sun_note?` ・ ${esc(s.sun_note)}`:''}<br><span style="font-size:11px;color:#8a7350">※2026年7月調査時点。変更の可能性があるため訪問前に要確認</span></div>`;
   if(s.approx) html+=`<div class="modal-note">※ 番地が確定できなかったため、エリア内のおよその位置に配置しています。</div>`;
+  if((s.links||[]).length){
+    html+=`<div class="modal-links">${s.links.map(l=>`<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} ↗</a>`).join('')}</div>`;
+  }
+  const tweets = s.tweets||[];
   if(s.videos.length){
     html+=`<div class="reply-label">この場所が登場するYouTube動画（${s.videos.length}本）</div>`;
     s.videos.forEach(id=>{
@@ -262,8 +278,28 @@ function openModal(slug){
           `<a class="cap-link" href="https://www.youtube.com/watch?v=${esc(id)}" target="_blank" rel="noopener">▶ YouTubeで開く ↗</a></div>`+
         `</div>`;
     });
-  } else { html+=`<div class="loading">このスポットに紐づく個別動画はありません。</div>`; }
+  }
+  if(tweets.length){
+    html+=`<div class="reply-label">この店が話題になったX投稿（${tweets.length}件）</div>`;
+    tweets.forEach(t=>{
+      html+=`<div class="embed-wrap" data-tid="${esc(t.id)}">`+
+        `<div class="fallback"><div class="fb-user">@${esc(t.handle||'')}</div>`+
+          (t.note?`<div class="fb-text">${esc(t.note)}</div>`:'')+
+          `<a class="fb-link" href="https://x.com/${esc(t.handle||'i')}/status/${esc(t.id)}" target="_blank" rel="noopener">𝕏 元のポストを開く${t.likes?`（${esc(t.likes)}いいね）`:''} ↗</a></div>`+
+        `<div class="tweet-slot" id="tw-${esc(t.id)}"></div></div>`;
+    });
+  }
+  if(!s.videos.length && !tweets.length){ html+=`<div class="loading">このスポットに紐づく出典はありません。</div>`; }
   body.innerHTML=html; body.scrollTop=0; backdrop.classList.add('on');
+  if(tweets.length && window.twttr && window.twttr.ready){
+    window.twttr.ready(tw=>{
+      tweets.forEach(t=>{
+        const slot=document.getElementById('tw-'+t.id); if(!slot||slot.childElementCount) return;
+        tw.widgets.createTweet(String(t.id), slot, {conversation:'none', theme:'light', align:'center', dnt:true})
+          .then(el=>{ if(el){ const fb=slot.parentElement.querySelector('.fallback'); if(fb) fb.style.display='none'; } }).catch(()=>{});
+      });
+    });
+  }
 }
 function closeModal(){ backdrop.classList.remove('on'); lastSlug=null; document.getElementById('m-body').innerHTML=''; }
 document.getElementById('m-close').onclick=closeModal;

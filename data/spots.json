@@ -502,6 +502,428 @@
    "sun": "12:00〜翌0:00",
    "sun_class": "lunch",
    "sun_note": "不定休。食べ飲み放題は通常4,980円（17時台/21時以降の予約で4,480円）。※動画では店舗所在地の明言がなく、条件に合致する唯一の店として高槻店を掲載"
+  },
+  {
+   "slug": "sakatoke",
+   "name": "サカトケ乃カミ",
+   "area": "umeda",
+   "cat": "立ち飲み・せんべろ",
+   "lat": 34.705898,
+   "lng": 135.497421,
+   "approx": false,
+   "desc": "旬魚と日本酒の人気立ち飲み（芝田1-3-7）。「8歳の息子と立ち飲みに入ったら常連客に温かく迎えられた」投稿が2026年4月に大拡散し、大阪全体の年間最大バズ（18,449いいね）に。名物は中身おまかせの「パンドラの箱」。Google 4.1（359件）。",
+   "videos": [],
+   "sun": "13:30〜24:00",
+   "sun_class": "lunch",
+   "tweets": [
+    {
+     "id": "2043923731257667601",
+     "handle": "tadashi754take",
+     "likes": "18,449"
+    }
+   ],
+   "links": [
+    {
+     "label": "公式HP",
+     "url": "https://www.shokuetudou.com/"
+    },
+    {
+     "label": "Google Map",
+     "url": "https://maps.google.com/?cid=7960692616354601937"
+    }
+   ]
+  },
+  {
+   "slug": "sashisu-shinume",
+   "name": "すし酒場 さしす 新梅田食道街店",
+   "area": "umeda",
+   "cat": "海鮮・寿司",
+   "lat": 34.703907,
+   "lng": 135.49791,
+   "approx": false,
+   "desc": "開店前から行列の寿司酒場・新梅田食道街店（角田町9-26）。「人気は映えだけじゃない」と分析するレポ（レモンサワー190円・うにく649円）が3,500いいね超え。名物こぼれ中とろは脳を揺らす迫力。昼飲みの定番。Google 4.5（57件）。",
+   "videos": [],
+   "sun": "12:00〜23:00",
+   "sun_class": "lunch",
+   "tweets": [
+    {
+     "id": "2069978385808572647",
+     "handle": "osaka2shin",
+     "likes": "3,561"
+    }
+   ],
+   "links": [
+    {
+     "label": "新梅田食道街HP",
+     "url": "https://shinume.com/shop/%E7%AB%8B%E3%81%A1%E3%81%99%E3%81%97%E9%85%92%E5%A0%B4-%E3%81%95%E3%81%97%E3%81%99%E3%80%80%E6%96%B0%E6%A2%85%E7%94%B0%E9%A3%9F%E9%81%93%E8%A1%97%E5%BA%97/"
+    },
+    {
+     "label": "Google Map",
+     "url": "https://maps.google.com/?cid=8783735119009254136"
+    }
+   ]
+  },
+  {
+   "slug": "chiruchiru",
+   "name": "ちるちるにびる",
+   "area": "umeda",
+   "cat": "バル・個性派",
+   "lat": 34.698402,
+   "lng": 135.498413,
+   "approx": false,
+   "desc": "「迷宮みたいな駅前第2ビル地下2階」の立ち飲み中華バル（梅田1-2-2 B2F）。痺れと辛さが絶妙な麻婆豆腐、黒酢酢豚、牡蠣クリーム春巻き。小皿590円〜であれこれ頼めるのが罪。開店前から並ぶ人気。Google 4.2（92件）。",
+   "videos": [],
+   "sun": "15:00〜22:45",
+   "sun_class": "evening",
+   "tweets": [
+    {
+     "id": "2049768539859669109",
+     "handle": "Linasuke0508",
+     "likes": "1,970"
+    }
+   ],
+   "links": [
+    {
+     "label": "Google Map",
+     "url": "https://maps.google.com/?cid=17828072376846180429"
+    }
+   ]
+  },
+  {
+   "slug": "masa",
+   "name": "大衆すし居酒屋 まさ",
+   "area": "umeda",
+   "cat": "海鮮・寿司",
+   "lat": 34.6985,
+   "lng": 135.49853,
+   "approx": false,
+   "desc": "「梅田で昼飲み×海鮮ならここ」と拡散（駅前第2ビルB2F 41号）。厚切りのお造りと黒毛和牛たたき、寿司10貫定食980円のコスパが売り。※Google評価は3.7（201件）と割れており、鮮度への辛口レビューもあるため過度な期待は禁物。",
+   "videos": [],
+   "sun": "12:00〜21:00",
+   "sun_class": "lunch",
+   "tweets": [
+    {
+     "id": "2051911765949313251",
+     "handle": "reiranran9214",
+     "likes": "1,555"
+    }
+   ],
+   "links": [
+    {
+     "label": "公式HP",
+     "url": "https://tachinomi-masa.com/"
+    },
+    {
+     "label": "Google Map",
+     "url": "https://maps.google.com/?cid=6852366478068936322"
+    }
+   ]
+  },
+  {
+   "slug": "gold",
+   "name": "フレンチ酒場 GOLD 梅田店",
+   "area": "umeda",
+   "cat": "バル・個性派",
+   "lat": 34.702721,
+   "lng": 135.502548,
+   "approx": false,
+   "desc": "東通商店街のカジュアルフレンチ（堂山町4-16）。極薄生ハム、トリュフバターの禁断シュウマイ、和牛カルパッチョを酒場価格で。1階カウンター・2階テーブル、予約推奨。Google 4.2（588件）。",
+   "videos": [],
+   "sun": "12:00〜翌1:00",
+   "sun_class": "lunch",
+   "tweets": [
+    {
+     "id": "2078491337662554257",
+     "handle": "sukiya_nen_",
+     "likes": "461"
+    }
+   ],
+   "links": [
+    {
+     "label": "公式HP",
+     "url": "https://french-sakaba-gold.jp/umeda/"
+    },
+    {
+     "label": "Google Map",
+     "url": "https://maps.google.com/?cid=15818966177585290670"
+    }
+   ]
+  },
+  {
+   "slug": "neo-tiger",
+   "name": "大衆酒場 北新地Neoタイガー",
+   "area": "umeda",
+   "cat": "大衆・名物",
+   "lat": 34.697959,
+   "lng": 135.498634,
+   "approx": false,
+   "desc": "高級街・北新地のど真ん中でタコハイ109円・ビール219円という逆張り価格が話題（曾根崎新地1-11-7）。「この値段で北新地、大丈夫！？」レビュー多数。仕事帰りのサラリーマンの聖地化が進行中。平日は朝5時まで。Google 4.0（176件）。",
+   "videos": [],
+   "sun": "17:00〜24:00",
+   "sun_class": "evening",
+   "tweets": [
+    {
+     "id": "2077770862107992122",
+     "handle": "ueda4649",
+     "likes": "106"
+    }
+   ],
+   "links": [
+    {
+     "label": "公式HP",
+     "url": "https://kemt500.gorp.jp/"
+    },
+    {
+     "label": "Google Map",
+     "url": "https://maps.google.com/?cid=14869833650533477236"
+    }
+   ]
+  },
+  {
+   "slug": "umaru",
+   "name": "大衆馬肉酒場 うまる 梅田お初天神店",
+   "area": "umeda",
+   "cat": "大衆・名物",
+   "lat": 34.700462,
+   "lng": 135.500473,
+   "approx": false,
+   "desc": "お初天神表参道の馬肉専門酒場（曾根崎2-11-22 2F）。ドリンク99円のハッピーアワー投稿がXで拡散。臭みゼロの馬刺し盛りとユッケが高評価で、Google 4.6（326件）はキタ勢トップクラス。17〜19時・22時〜は料理も半額帯。",
+   "videos": [],
+   "sun": "12:00〜23:00",
+   "sun_class": "lunch",
+   "tweets": [
+    {
+     "id": "2079117644620595514",
+     "handle": "crew_value1"
+    }
+   ],
+   "links": [
+    {
+     "label": "ホットペッパー",
+     "url": "https://www.hotpepper.jp/strJ004090749/"
+    },
+    {
+     "label": "Google Map",
+     "url": "https://maps.google.com/?cid=6550274978308180759"
+    }
+   ]
+  },
+  {
+   "slug": "xavier",
+   "name": "無敵のザビエル",
+   "area": "tenma",
+   "cat": "バル・個性派",
+   "lat": 34.703411,
+   "lng": 135.511505,
+   "approx": false,
+   "desc": "「どの高級中華より感動した。凄まじくクリエイティブなのに全品千円以下」という投稿が千いいね超えの創作中華居酒屋（天神橋4-6-17）。名物は旨味たっぷりの麻婆豆腐と黄金ピータン。天満の年間グルメバズ首位。Google 4.8（33件）。",
+   "videos": [],
+   "sun": "定休日",
+   "sun_class": "closed",
+   "sun_note": "日曜定休（土曜は12:00〜23:30営業）",
+   "tweets": [
+    {
+     "id": "2047958236582846661",
+     "handle": "hiroyukikishi",
+     "likes": "1,047"
+    }
+   ],
+   "links": [
+    {
+     "label": "Instagram",
+     "url": "https://www.instagram.com/mutekinoxavier/"
+    },
+    {
+     "label": "Google Map",
+     "url": "https://maps.google.com/?cid=8732810730672519435"
+    }
+   ]
+  },
+  {
+   "slug": "gifuya",
+   "name": "大衆酒場 ぎふや 裏天満店",
+   "area": "tenma",
+   "cat": "大衆・名物",
+   "lat": 34.706974,
+   "lng": 135.51297,
+   "approx": false,
+   "desc": "生ビール176円・から揚げ429円の会計レポが繰り返しバズる裏天満の代表格（池田町7-1）。創業100年系の串カツと名物どろ炊きが人気で、名古屋から遠征するファンも。昼12時から通し営業。Google 4.5（155件）。",
+   "videos": [],
+   "sun": "11:30〜23:00",
+   "sun_class": "lunch",
+   "tweets": [
+    {
+     "id": "2050542775083712603",
+     "handle": "Uzusio_Tatsuya",
+     "likes": "608"
+    }
+   ],
+   "links": [
+    {
+     "label": "ホットペッパー",
+     "url": "https://www.hotpepper.jp/strJ003298930/"
+    },
+    {
+     "label": "Google Map",
+     "url": "https://maps.google.com/?cid=12893303845543766012"
+    }
+   ]
+  },
+  {
+   "slug": "tenma-sakagura",
+   "name": "天満酒蔵",
+   "area": "tenma",
+   "cat": "大衆・名物",
+   "lat": 34.706623,
+   "lng": 135.511292,
+   "approx": false,
+   "desc": "創業56年、昼から大瓶400円の老舗大衆酒場（天神橋5-7-28）。マンガ「ソロ酔い酒場」の舞台として繰り返し話題になり、テレビ酒場番組にも登場。おでん盛り400円・きずし280円の昭和価格。渋い老舗ゆえ点数より空気を楽しむ店（Google 3.7・605件）。",
+   "videos": [],
+   "sun": "11:30〜21:30",
+   "sun_class": "lunch",
+   "sun_note": "火・金定休",
+   "tweets": [
+    {
+     "id": "2074310130611749301",
+     "handle": "1000bero_net",
+     "likes": "294"
+    }
+   ],
+   "links": [
+    {
+     "label": "公式HP",
+     "url": "http://tenmasakagura.com/"
+    },
+    {
+     "label": "Google Map",
+     "url": "https://maps.google.com/?cid=12113388735368868049"
+    }
+   ]
+  },
+  {
+   "slug": "butamon",
+   "name": "ぶたもん 天満店",
+   "area": "tenma",
+   "cat": "大衆・名物",
+   "lat": 34.705494,
+   "lng": 135.511963,
+   "approx": false,
+   "desc": "天満駅1分、1階立ち飲み・2階テーブルの二毛作やきとん（天神橋4-12-27）。臭みのないレバステーキとハツ刺し、濃いめハイボールのせんべろセットが名物で、はしご酒レポの常連。オフ会会場としても指名される。Google 4.1（239件）。",
+   "videos": [],
+   "sun": "11:00〜23:00",
+   "sun_class": "lunch",
+   "tweets": [
+    {
+     "id": "2051989203240784196",
+     "handle": "RDG_P2s",
+     "likes": "277"
+    }
+   ],
+   "links": [
+    {
+     "label": "Instagram",
+     "url": "https://www.instagram.com/tenma_butamon/"
+    },
+    {
+     "label": "Google Map",
+     "url": "https://maps.google.com/?cid=2058946506231717100"
+    }
+   ]
+  },
+  {
+   "slug": "shurakudo",
+   "name": "天満酒楽堂",
+   "area": "tenma",
+   "cat": "海鮮・寿司",
+   "lat": 34.707554,
+   "lng": 135.512039,
+   "approx": false,
+   "desc": "市場直送鮮魚と47都道府県の日本酒60種（天神橋5-2-10）。喧騒の天満で一歩入ると落ち着いたシックな空間に変わる二面性が持ち味。平日20時で満席・予約なし入店お断りの報告があるため予約推奨。Google 4.6（177件）。",
+   "videos": [],
+   "sun": "17:00〜24:00",
+   "sun_class": "evening",
+   "tweets": [
+    {
+     "id": "2077074252604600804",
+     "handle": "mahjong_oniku",
+     "likes": "215"
+    }
+   ],
+   "links": [
+    {
+     "label": "食べログ",
+     "url": "https://tabelog.com/osaka/A2701/A270103/27145628/"
+    },
+    {
+     "label": "Google Map",
+     "url": "https://maps.google.com/?cid=6498648263260273128"
+    }
+   ]
+  },
+  {
+   "slug": "umematsu",
+   "name": "とりさし梅松 天満店",
+   "area": "tenma",
+   "cat": "立ち飲み・せんべろ",
+   "lat": 34.705982,
+   "lng": 135.511307,
+   "approx": false,
+   "desc": "鹿児島ブランドのとりさし専門立ち飲み（天神橋4-10-19）。せんべろセットと皮トロレア炭火焼きが「安くて美味い」と評判で、Google 4.8×1,167件は今回の14軒で最強の評価。鹿児島焼酎と甘口九州醤油の組み合わせが正解。",
+   "videos": [],
+   "sun": "11:00〜18:30",
+   "sun_class": "lunch",
+   "sun_note": "早じまい注意",
+   "tweets": [
+    {
+     "id": "2077249792204554491",
+     "handle": "kanpa____i",
+     "likes": "53"
+    }
+   ],
+   "links": [
+    {
+     "label": "Instagram",
+     "url": "https://www.instagram.com/torisashi.umematsu.tenma"
+    },
+    {
+     "label": "Google Map",
+     "url": "https://maps.google.com/?cid=18144726801786428325"
+    }
+   ]
+  },
+  {
+   "slug": "muni",
+   "name": "大衆酒場 むに 大阪天満店",
+   "area": "tenma",
+   "cat": "大衆・名物",
+   "lat": 34.707027,
+   "lng": 135.512604,
+   "approx": false,
+   "desc": "2025年9月開店のネオン大衆酒場（池田町6-18）。A5和牛の肉手毬寿司と飲むほど容量が増える「出世サワー」がSNS映えで急成長。16〜18時入店でサワー90円のハッピーアワーあり。Google 4.8（816件）※食べログ3.06との乖離が大きく、映え重視で楽しむ店。",
+   "videos": [],
+   "sun": "12:00〜翌2:00",
+   "sun_class": "lunch",
+   "tweets": [
+    {
+     "id": "2077821211846013215",
+     "handle": "TENCHO_777",
+     "likes": "49"
+    }
+   ],
+   "links": [
+    {
+     "label": "公式HP",
+     "url": "https://muni-tenma.owst.jp/"
+    },
+    {
+     "label": "食べログ",
+     "url": "https://tabelog.com/osaka/A2701/A270103/27150951/"
+    },
+    {
+     "label": "Google Map",
+     "url": "https://maps.google.com/?cid=10025413216440185919"
+    }
+   ]
   }
  ]
 }
